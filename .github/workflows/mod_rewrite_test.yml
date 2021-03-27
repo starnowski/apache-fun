@@ -1,0 +1,24 @@
+name: Test for mod_rewrite option
+
+on:
+  push:
+    paths:
+      - 'mod_rewrite_test/**'
+      - 'github/workflows/mod_rewrite_test.yml'
+
+## https://github.com/supercharge/mongodb-github-action/blob/master/.github/workflows/test-single-instance.yml
+## https://github.com/supercharge/mongodb-github-action
+
+jobs:
+  mongodb-action:
+    runs-on: ubuntu-latest
+
+    name: Run tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - run: ./build_and_run_http_image.sh
+        working-directory: ./mod_rewrite_test
+        env:
+          CI: true
