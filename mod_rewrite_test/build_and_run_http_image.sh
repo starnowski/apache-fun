@@ -15,5 +15,8 @@ sed "s/XXX_ANOTHER_SERVER_PROTOCOL/${ANOTHER_SERVER_PROTOCOL}/g" -i my-httpd.con
 docker build -t my-apache2 .
 docker run -dit --name my-running-app -p 8090:80 my-apache2
 
-curl localhost:8090/show/my/staff/domains
+tmpfile=$(mktemp)
+curl localhost:8090/show/my/staff/domains > tmpfile
+grep "The document has moved <a href=\"${ANOTHER_SERVER_PROTOCOL}://${ANOTHER_SERVER_IP}:${ANOTHER_SERVER_PORT}/internal/domains\">here</a>" tmpfile
+
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=my-apache2 --format="{{.ID}}"))
