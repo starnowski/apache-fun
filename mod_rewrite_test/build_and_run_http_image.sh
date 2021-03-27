@@ -20,5 +20,7 @@ curl localhost:8090/show/my/staff/domains > "$tmpfile"
 echo "Response"
 cat "$tmpfile"
 grep "The document has moved <a href=\"${ANOTHER_SERVER_PROTOCOL}://${ANOTHER_SERVER_IP}:${ANOTHER_SERVER_PORT}/internal/domains\">here</a>" "$tmpfile"
+RESULT="$?"
 
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=my-apache2 --format="{{.ID}}"))
+exit "$RESULT"
